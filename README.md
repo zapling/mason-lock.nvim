@@ -7,7 +7,11 @@ Provides lockfile functionality to [mason.nvim](https://github.com/williamboman/
 ```lua
 -- lazy.nvim
 require("lazy").setup({
-  "zapling/mason-lock.nvim", init = function() require("mason-lock").setup() end},
+  "zapling/mason-lock.nvim", init = function()
+    require("mason-lock").setup({
+        lockfile_path = vim.fn.stdpath("config") .. "/mason-lock.json" -- (default)
+    }) 
+  end},
 })
 ```
 
