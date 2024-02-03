@@ -1,0 +1,1 @@
+# mason-lock.nvim
