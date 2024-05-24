@@ -59,6 +59,7 @@ function M.write_lockfile()
 
     f:write("\n}")
     f:close()
+    vim.notify("[mason-lock]: Wrote Mason lockfile")
 end
 
 function M.restore_from_lockfile()
