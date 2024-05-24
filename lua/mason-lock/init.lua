@@ -22,7 +22,7 @@ function M.write_lockfile()
     for _, package in pairs(packages) do
         package:get_installed_version(function(success, version)
             if not success then
-                table.insert(entries, 0)
+                table.insert(entries, nil)
                 return
             end
 
