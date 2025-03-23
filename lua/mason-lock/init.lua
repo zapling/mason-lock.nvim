@@ -1,5 +1,7 @@
 local registry = require "mason-registry"
 
+local mason_major_version = require("mason.version").MAJOR_VERSION
+
 local M = {}
 M.lockfile_path = vim.fn.stdpath("config") .. "/mason-lock.json"
 M._restore_in_progress = false
@@ -20,17 +22,25 @@ function M.write_lockfile()
 
     local entries = {}
     for _, package in pairs(packages) do
-        package:get_installed_version(function(success, version)
-            if not success then
-                table.insert(entries, nil)
-                return
-            end
-
+        if mason_major_version == 2 then
+            local installed_version = package:get_installed_version()
             table.insert(entries, {
                 name = package.name,
-                version = version,
+                version = installed_version,
             })
-        end)
+        else
+            package:get_installed_version(function(success, version)
+                if not success then
+                    table.insert(entries, nil)
+                    return
+                end
+
+                table.insert(entries, {
+                    name = package.name,
+                    version = version,
+                })
+            end)
+        end
     end
 
     vim.wait(5000, function() return #packages == #entries end)
