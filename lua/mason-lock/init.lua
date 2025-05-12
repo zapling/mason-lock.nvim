@@ -20,17 +20,15 @@ function M.write_lockfile()
 
     local entries = {}
     for _, package in pairs(packages) do
-        package:get_installed_version(function(success, version)
-            if not success then
-                table.insert(entries, nil)
-                return
-            end
+        if package:is_installed() == false then
+            table.insert(entries, nil)
+            return
+        end
 
-            table.insert(entries, {
-                name = package.name,
-                version = version,
-            })
-        end)
+        table.insert(entries, {
+            name = package.name,
+            version = package:get_installed_version(),
+        })
     end
 
     vim.wait(5000, function() return #packages == #entries end)
